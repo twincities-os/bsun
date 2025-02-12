@@ -1,4 +1,4 @@
-package bsun
+package main
 
 import (
 	"flag"
