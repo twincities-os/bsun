@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
@@ -13,6 +14,21 @@ func main() {
 	fmt.Printf("Hello, %s!\n", *name)
 }
 
-func readBson() {
-	var raw bson.Raw = nil
+func readBson(filname string) {
+
+	dat, err := os.ReadFile(filname)
+	var raw bson.Raw = dat
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = raw.Validate()
+
+	if err != nil {
+		panic(err)
+	}
+
 }
+
+func writeToBson() {}
