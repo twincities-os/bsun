@@ -11,7 +11,60 @@ import (
 )
 
 func main() {
+	rawJsonData, err := os.ReadFile(path.Join("tests", "sample.json"))
 
+	if err != nil {
+		panic(err)
+	}
+
+	writeToBson(rawJsonData)
+}
+
+func readBson(filename string) {
+
+	dat, err := os.ReadFile(filename)
+	var raw bson.Raw = dat
+
+	if err != nil {
+		panic(err)
+	}
+
+	err = raw.Validate()
+
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+/*
+* This function takes in raw JSON data in the form of
+* a byte array, and returns the data in BSON format
+ */
+func writeToBson(jsonData []byte) {
+
+	// using this as a general type for JSON objects.
+	var jsonObj map[string]interface{}
+
+	if err := json.Unmarshal(jsonData, &jsonObj); err != nil {
+		panic(err)
+	}
+	// TODO: figure out how to convert this jsonObj to BSON format
+
+	rawBson, err := bson.Marshal(jsonObj)
+
+	if err != nil {
+		panic(err)
+	}
+
+	os.WriteFile(path.Join("tests", "sample.bson"), rawBson, os.ModeAppend)
+}
+
+/*
+* random test code that I had in main. Will most likely remove soon.
+ */
+
+func randomJunk() {
 	jsonToBson := bson.M{
 		"name":    "ui",
 		"private": true,
@@ -60,37 +113,4 @@ func main() {
 	rawBson := jsonToBson.String()
 
 	fmt.Printf("JSON: %s", rawBson)
-}
-
-func readBson(filename string) {
-
-	dat, err := os.ReadFile(filename)
-	var raw bson.Raw = dat
-
-	if err != nil {
-		panic(err)
-	}
-
-	err = raw.Validate()
-
-	if err != nil {
-		panic(err)
-	}
-
-}
-
-/*
-* This function takes in raw JSON data in the form of
-* a byte array, and returns the data in BSON format
- */
-func writeToBson(jsonData []byte) {
-
-	// using this as a general type for JSON objects.
-	var jsonObj map[string]interface{}
-
-	if err := json.Unmarshal(jsonData, &jsonObj); err != nil {
-		panic(err)
-	}
-	// TODO: figure out how to convert this jsonObj to BSON format
-
 }
