@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -78,4 +79,18 @@ func readBson(filename string) {
 
 }
 
-func writeToBson() {}
+/*
+* This function takes in raw JSON data in the form of
+* a byte array, and returns the data in BSON format
+ */
+func writeToBson(jsonData []byte) {
+
+	// using this as a general type for JSON objects.
+	var jsonObj map[string]interface{}
+
+	if err := json.Unmarshal(jsonData, &jsonObj); err != nil {
+		panic(err)
+	}
+	// TODO: figure out how to convert this jsonObj to BSON format
+
+}
